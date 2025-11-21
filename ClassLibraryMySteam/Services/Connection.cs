@@ -80,6 +80,99 @@ namespace ClassLibraryMySteam.Services
         }
 
         /// <summary>
+        /// Получение id тега по имени
+        /// </summary>
+        /// <param name="tagName">имя тега</param>
+        /// <returns>Int если имя найдено, иначе null</returns>
+        public async Task<int?> GetTagByNameAsync(string tagName)
+        {
+            string query = AppConfig.SqlGetTagByName;
+
+            using var conn = new SQLiteConnection(_connectionString);
+            await conn.OpenAsync();
+
+            using var cmd = new SQLiteCommand(query, conn);
+            cmd.Parameters.AddWithValue("@Name", tagName);
+
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            if (await reader.ReadAsync())
+            {
+                return reader.GetInt32(0);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Получение id произведения по названию
+        /// </summary>
+        /// <param name="title">название произведения</param>
+        /// <returns></returns>
+        public async Task<int?> GetWorkByTitleAsync(string title)
+        {
+            string query = AppConfig.SqlGetWorkByTitle;
+
+            using var conn = new SQLiteConnection(_connectionString);
+            await conn.OpenAsync();
+
+            using var cmd = new SQLiteCommand(query, conn);
+            cmd.Parameters.AddWithValue("@Title", title);
+
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            if (await reader.ReadAsync())
+            {
+                return reader.GetInt32(0);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Получение id типа по имени
+        /// </summary>
+        /// <param name="typeName">имя типа</param>
+        /// <returns>Int, если тип найден, иначе false</returns>
+        public async Task<int?> GetTypeByNameAsync(string typeName)
+        {
+            string query = AppConfig.SqlGetTypeByName;
+
+            using var conn = new SQLiteConnection(_connectionString);
+            await conn.OpenAsync();
+
+            using var cmd = new SQLiteCommand(query, conn);
+            cmd.Parameters.AddWithValue("@Name", typeName);
+
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            if (await reader.ReadAsync())
+            {
+                return reader.GetInt32(0);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Добавление нового тега
+        /// </summary>
+        /// <param name="tagName">имя тега</param>
+        /// <returns></returns>
+        public async Task AddNewTagAsync(string tagName)
+        {
+            string query = AppConfig.AddNewTag;
+
+            using var conn = new SQLiteConnection(_connectionString);
+            await conn.OpenAsync();
+
+            using var cmd = new SQLiteCommand(query, conn);
+            cmd.Parameters.AddWithValue("@Name", tagName);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        /// <summary>
         /// Добавление нового произведения
         /// </summary>
         /// <param name="title">название произведения</param>
@@ -124,6 +217,12 @@ namespace ClassLibraryMySteam.Services
             await cmd.ExecuteNonQueryAsync();
         }
 
+        /// <summary>
+        /// Добавление нового тега к произведению
+        /// </summary>
+        /// <param name="WorkId">id произведения</param>
+        /// <param name="TagId">id тэга</param>
+        /// <returns></returns>
         public async Task AddTagAsync(int WorkId, int TagId)
         {
             string query = AppConfig.AddTag;

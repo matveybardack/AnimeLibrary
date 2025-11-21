@@ -85,7 +85,37 @@ namespace ClassLibraryMySteam.Config
                 w.CoverPath
             FROM Works w
             JOIN Types t ON w.TypeId = t.TypesId
-            WHERE w.WorksId = @WorksId;
+            WHERE w.Title = @Title;
+        ";
+
+        /// <summary>
+        /// Поиск тега по имени
+        /// </summary>
+        internal static readonly string SqlGetTagByName = @"
+            SELECT 
+                tg.TagId,
+                tg.Name
+            FROM Tags tg
+            WHERE tg.Name = @Name;
+        ";
+
+        /// <summary>
+        /// Поиск типа по имени
+        /// </summary>
+        internal static readonly string SqlGetTypeByName = @"
+            SELECT 
+                tp.TypesId,
+                tp.Name
+            FROM Types tp
+            WHERE tp.Name = @Name;
+        ";
+
+        /// <summary>
+        /// Добавление нового тега
+        /// </summary>
+        internal static readonly string AddNewTag = @"
+            INSERT INTO Tags (Name)
+            VALUES (@Name); 
         ";
     }
 }
