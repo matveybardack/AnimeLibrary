@@ -274,5 +274,44 @@ namespace ClassLibraryMySteam.Services
                 throw new Exception("Ошибка при добавлении тега в базу данных.", ex);
             }
         }
+
+        /// <summary>
+        /// Получение произведений по пользовательскому фильтру
+        /// </summary>
+        /// <param name="filterCondition">фильтр (WHERE)</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">ошибка подключения к БД</exception>
+        public async Task<List<WorkItem>> GetWorksByFilterAsync(string filterCondition)
+        {
+            var connection = new Connection();
+            try
+            {
+                return await connection.GetWorksByFilterAsync(filterCondition);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ошибка при получении произведений по фильтру.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Получение ограниченного количества произведений по рейтингу
+        /// </summary>
+        /// <param name="rating">порог рейтинга</param>
+        /// <param name="limit">число произведений</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">ошибка подключения к БД</exception>
+        public async Task<List<WorkItem>> GetWorksByRatingAndLimitAsync(double rating, int limit)
+        {
+            var connection = new Connection();
+            try
+            {
+                return await connection.GetWorksByRatingAndLimitAsync(rating, limit);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ошибка при получении произведений по рейтингу и лимиту.", ex);
+            }
+        }
     }
 }

@@ -117,5 +117,38 @@ namespace ClassLibraryMySteam.Config
             INSERT INTO Tags (Name)
             VALUES (@Name); 
         ";
+
+        /// <summary>
+        /// Получение работ по фильтру
+        /// Добавлено для дальнейшего расширения функционала через StringBuilder
+        /// </summary>
+        internal static readonly string SqlGetWorksByFilter = @"
+            SELECT
+                w.WorksId,
+                w.Title,
+                t.Name AS TypeName,
+                w.Year,
+                w.Rating,
+                w.CoverPath
+            FROM Works w
+            JOIN Types t ON w.TypeId = t.TypesId
+        ";
+
+        /// <summary>
+        /// Получение работ с рейтингом >= и лимитом
+        /// </summary>
+        internal static readonly string SqlGetWorksByRatingAndLimit = @"
+            SELECT
+                w.WorksId,
+                w.Title,
+                t.Name AS TypeName,
+                w.Year,
+                w.Rating,
+                w.CoverPath
+            FROM Works w
+            JOIN Types t ON w.TypeId = t.TypesId
+            WHERE w.Rating >= @Rating
+            LIMIT @Limit;
+        ";
     }
 }

@@ -16,5 +16,9 @@ namespace ClassLibraryMySteam.Interfaces
         Task AddTagAsync(string work, string tag);
 
         public Task<bool> AddWorkAsync(WorkItem work);
+
+        public Task<List<WorkItem>> GetWorksByFilterAsync(string filterCondition);
+
+        public Task<List<WorkItem>> GetWorksByRatingAndLimitAsync(double rating, int limit);
     }
 }

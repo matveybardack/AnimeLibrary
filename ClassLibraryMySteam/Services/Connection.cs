@@ -11,12 +11,7 @@ namespace ClassLibraryMySteam.Services
 {
     public class Connection
     {
-        private readonly string _connectionString;
-
-        public Connection()
-        {
-            _connectionString = AppConfig.ConnectionString;
-        }
+        private readonly string _connectionString = AppConfig.ConnectionString;
 
         /// <summary>
         /// Получение всех произведений с типами
@@ -236,6 +231,74 @@ namespace ClassLibraryMySteam.Services
             cmd.Parameters.AddWithValue("@TagId", TagId);
 
             await cmd.ExecuteNonQueryAsync();
+        }
+
+        /// <summary>
+        /// Поиск произведений по условию фильтрации
+        /// </summary>
+        /// <param name="filterCondition">пользовательский фильтр</param>
+        /// <returns>Список произведений (WorkItem)</returns>
+        public async Task<List<WorkItem>> GetWorksByFilterAsync(string filterCondition)
+        {
+            string query = AppConfig.SqlGetWorksByFilter + " " + filterCondition;
+
+            var list = new List<WorkItem>();
+
+            using var conn = new SQLiteConnection(_connectionString);
+            await conn.OpenAsync();
+
+            using var cmd = new SQLiteCommand(query, conn);
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                list.Add(new WorkItem(
+                    WorkId: reader.GetInt32(0),
+                    Title: reader.GetString(1),
+                    TypeName: reader.GetString(2),
+                    Year: reader.IsDBNull(3) ? null : reader.GetInt32(3),
+                    Rating: reader.IsDBNull(4) ? null : reader.GetDouble(4),
+                    CoverPath: reader.IsDBNull(5) ? null : reader.GetString(5)
+                ));
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// Получение ограниченного количества произведений по рейтингу
+        /// </summary>
+        /// <param name="rating">порог рейтинга</param>
+        /// <param name="limit">число произведений</param>
+        /// <returns></returns>
+        public async Task<List<WorkItem>> GetWorksByRatingAndLimitAsync(double rating, int limit)
+        {
+            string query = AppConfig.SqlGetWorksByRatingAndLimit;
+
+            var list = new List<WorkItem>();
+
+            using var conn = new SQLiteConnection(_connectionString);
+            await conn.OpenAsync();
+
+            using var cmd = new SQLiteCommand(query, conn);
+            cmd.Parameters.AddWithValue("@Rating", rating);
+            cmd.Parameters.AddWithValue("@Limit", limit);
+
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                list.Add(new WorkItem(
+                    WorkId: reader.GetInt32(0),
+                    Title: reader.GetString(1),
+                    TypeName: reader.GetString(2),
+                    Year: reader.IsDBNull(3) ? null : reader.GetInt32(3),
+                    Rating: reader.IsDBNull(4) ? null : reader.GetDouble(4),
+                    CoverPath: reader.IsDBNull(5) ? null : reader.GetString(5)
+                ));
+            }
+
+            return list;
         }
     }
 }
