@@ -30,6 +30,7 @@ namespace ClassLibraryMySteam.Config
                 w.Year,
                 w.Rating,
                 w.CoverPath
+                w.Series
             FROM Works w
             JOIN Types t ON w.TypeId = t.TypesId
             ORDER BY w.Title;
@@ -53,7 +54,7 @@ namespace ClassLibraryMySteam.Config
         /// </summary>
         internal static readonly string AddWork = @"
                 INSERT INTO Works (Title, TypeId, Year, Rating, CoverPath)
-                VALUES (@Title, @TypeId, @Year, @Rating, @CoverPath);
+                VALUES (@Title, @TypeId, @Year, @Rating, @CoverPath, @Series);
         ";
 
         /// <summary>
@@ -83,6 +84,7 @@ namespace ClassLibraryMySteam.Config
                 w.Year,
                 w.Rating,
                 w.CoverPath
+                w.Series
             FROM Works w
             JOIN Types t ON w.TypeId = t.TypesId
             WHERE w.Title = @Title;
@@ -130,6 +132,7 @@ namespace ClassLibraryMySteam.Config
                 w.Year,
                 w.Rating,
                 w.CoverPath
+                w.Series
             FROM Works w
             JOIN Types t ON w.TypeId = t.TypesId
         ";
@@ -145,6 +148,7 @@ namespace ClassLibraryMySteam.Config
                 w.Year,
                 w.Rating,
                 w.CoverPath
+                w.Series
             FROM Works w
             JOIN Types t ON w.TypeId = t.TypesId
             WHERE w.Rating >= @Rating

@@ -1,13 +1,14 @@
 ﻿using ClassLibraryMySteam.Config;
 using ClassLibraryMySteam.Interfaces;
 using ClassLibraryMySteam.Models;
+using ClassLibraryMySteam.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassLibraryMySteam.Services
+namespace ClassLibraryMySteam.ViewModels
 {
     public class DBService : IDBService
     {
@@ -156,7 +157,8 @@ namespace ClassLibraryMySteam.Services
                 typeId: typeId.Value,
                 year: work.Year,
                 rating: work.Rating,
-                cover: work.CoverPath
+                cover: work.CoverPath,
+                series: work.Series
             );
 
             return false;

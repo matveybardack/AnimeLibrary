@@ -21,6 +21,7 @@ namespace ClassLibraryMySteam.Models
         string TypeName,
         int? Year,
         double? Rating,
-        string? CoverPath
+        string? CoverPath,
+        int Series
     );
 }

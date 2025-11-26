@@ -1,6 +1,6 @@
 ﻿using ClassLibraryMySteam.Config;
 using ClassLibraryMySteam.Models;
-using ClassLibraryMySteam.Services;
+using ClassLibraryMySteam.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -19,11 +19,12 @@ namespace ConsoleAppTempMayDelete
                 // 1. Добавляем новое произведение
                 var newWork = new WorkItem(
                     WorkId: 2,                // WorkId не важен, база присвоит свой
-                    Title: "My Hero Academia",
+                    Title: "My Hero Academia 1",
                     TypeName: "Anime",
                     Year: 2016,
                     Rating: 9.2,
-                    CoverPath: null
+                    CoverPath: null,
+                    Series: 24
                 );
 
                 bool yakudza = await dbService.AddWorkAsync(newWork);
