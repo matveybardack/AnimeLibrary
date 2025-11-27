@@ -5,29 +5,6 @@
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen">
 
-    <Window.Resources>
-        <!-- Стиль для карточек лабораторных работ -->
-        <Style x:Key="TraditionalCard" TargetType="Border">
-            <Setter Property="Background" Value="#1a1a2e"/>
-            <Setter Property="BorderBrush" Value="#e94560"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="8"/>
-            <Setter Property="Margin" Value="8"/>
-            <Setter Property="Padding" Value="15"/>
-        </Style>
-
-        <!-- Стиль для кнопок -->
-        <Style x:Key="TraditionalButton" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Foreground" Value="#ffffff"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="FontFamily" Value="Segoe UI"/>
-        </Style>
-    </Window.Resources>
-
     <Grid>
         <!-- ТЁМНАЯ КАРТИНКА НА ФОН -->
         <Image Source="/Images/yakuza-0-goro-majima-kiryu-kazuma.jpg" 
@@ -60,7 +37,7 @@
                 <StackPanel HorizontalAlignment="Center">
 
                     <!-- ЛР-1 -->
-                    <Border Style="{StaticResource TraditionalCard}" Margin="0,10,0,15" Width="250
+                    <Border Style="{StaticResource TraditionalCard}" Margin="0,50,0,15" Width="250
                             ">
                         <Button Style="{StaticResource TraditionalButton}" Command="{Binding OpenLab1Command}">
                             <StackPanel>
@@ -68,33 +45,7 @@
                                            FontSize="20" 
                                            HorizontalAlignment="Center" 
                                            Foreground="#e94560"/>
-                                <TextBlock Text="ЛР-1: Контракты" 
-                                           Margin="0,8,0,6"
-                                           HorizontalAlignment="Center"
-                                           FontWeight="Bold"/>
-                                <Rectangle Height="1" 
-                                           Fill="#e94560" 
-                                           Margin="0,3" 
-                                           Width="130"/>
                                 <TextBlock Text="Управление коллекцией" 
-                                           TextWrapping="Wrap" 
-                                           Width="160"
-                                           TextAlignment="Center"
-                                           Foreground="#cccccc"
-                                           FontSize="10"/>
-                            </StackPanel>
-                        </Button>
-                    </Border>
-
-                    <!-- ЛР-2 -->
-                    <Border Style="{StaticResource TraditionalCard}" Margin="0,0,0,15">
-                        <Button Style="{StaticResource TraditionalButton}" Command="{Binding OpenLab2Command}">
-                            <StackPanel>
-                                <TextBlock Text="二" 
-                                           FontSize="20" 
-                                           HorizontalAlignment="Center" 
-                                           Foreground="#e94560"/>
-                                <TextBlock Text="ЛР-2: WP-движок" 
                                            Margin="0,8,0,6"
                                            HorizontalAlignment="Center"
                                            FontWeight="Bold"/>
@@ -102,7 +53,7 @@
                                            Fill="#e94560" 
                                            Margin="0,3" 
                                            Width="130"/>
-                                <TextBlock Text="Слабейшее постусловие" 
+                                <TextBlock Text="Добавление и поиск" 
                                            TextWrapping="Wrap" 
                                            Width="160"
                                            TextAlignment="Center"
@@ -116,11 +67,11 @@
                     <Border Style="{StaticResource TraditionalCard}" Margin="0,0,0,15">
                         <Button Style="{StaticResource TraditionalButton}" Command="{Binding OpenLab3Command}">
                             <StackPanel>
-                                <TextBlock Text="三" 
+                                <TextBlock Text="二"
                                            FontSize="20" 
                                            HorizontalAlignment="Center" 
                                            Foreground="#e94560"/>
-                                <TextBlock Text="ЛР-3: Циклы" 
+                                <TextBlock Text="Подбор произведения" 
                                            Margin="0,8,0,6"
                                            HorizontalAlignment="Center"
                                            FontWeight="Bold"/>
@@ -128,7 +79,7 @@
                                            Fill="#e94560" 
                                            Margin="0,3" 
                                            Width="130"/>
-                                <TextBlock Text="Обработка последовательностей"
+                                <TextBlock Text="Фильтры и сортировка"
                                            TextWrapping="Wrap" 
                                            Width="160"
                                            TextAlignment="Center"
@@ -142,11 +93,11 @@
                     <Border Style="{StaticResource TraditionalCard}" Margin="0,0,0,15">
                         <Button Style="{StaticResource TraditionalButton}" Command="{Binding OpenLab4Command}">
                             <StackPanel>
-                                <TextBlock Text="四" 
+                                <TextBlock Text="三" 
                                            FontSize="20" 
                                            HorizontalAlignment="Center" 
                                            Foreground="#e94560"/>
-                                <TextBlock Text="ЛР-4: Логика" 
+                                <TextBlock Text="Планировщик просмотра" 
                                            Margin="0,8,0,6" 
                                            HorizontalAlignment="Center"
                                            FontWeight="Bold"/>
@@ -154,7 +105,7 @@
                                            Fill="#e94560" 
                                            Margin="0,3" 
                                            Width="130"/>
-                                <TextBlock Text="Булева алгебра фильтров" 
+                                <TextBlock Text="Расписание и статистика" 
                                            TextWrapping="Wrap" 
                                            Width="160"
                                            TextAlignment="Center"
@@ -163,7 +114,7 @@
                             </StackPanel>
                         </Button>
                     </Border>
-                    <Border Style="{StaticResource TraditionalCard}" Margin="0,10,0,15">
+                    <Border Style="{StaticResource TraditionalCard}" Margin="0,50,0,15" Cursor="">
                         <Button Style="{StaticResource TraditionalButton}" Command="{Binding ExitCommand}">
                             <StackPanel>
                                 <TextBlock Text="終" 
