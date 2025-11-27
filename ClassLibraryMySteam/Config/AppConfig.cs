@@ -23,7 +23,7 @@
                 t.Name AS TypeName,
                 w.Year,
                 w.Rating,
-                w.CoverPath
+                w.CoverPath,
                 w.Series
             FROM Works w
             JOIN Types t ON w.TypeId = t.TypesId
@@ -46,7 +46,7 @@
         /// Добавление нового произведения
         /// </summary>
         internal static readonly string AddWork = @"
-                INSERT INTO Works (Title, TypeId, Year, Rating, CoverPath)
+                INSERT INTO Works (Title, TypeId, Year, Rating, CoverPath, Series)
                 VALUES (@Title, @TypeId, @Year, @Rating, @CoverPath, @Series);
         ";
 
@@ -76,7 +76,7 @@
                 t.Name AS TypeName,
                 w.Year,
                 w.Rating,
-                w.CoverPath
+                w.CoverPath,
                 w.Series
             FROM Works w
             JOIN Types t ON w.TypeId = t.TypesId
@@ -124,7 +124,7 @@
                 t.Name AS TypeName,
                 w.Year,
                 w.Rating,
-                w.CoverPath
+                w.CoverPath,
                 w.Series
             FROM Works w
             JOIN Types t ON w.TypeId = t.TypesId
@@ -140,7 +140,7 @@
                 t.Name AS TypeName,
                 w.Year,
                 w.Rating,
-                w.CoverPath
+                w.CoverPath,
                 w.Series
             FROM Works w
             JOIN Types t ON w.TypeId = t.TypesId
