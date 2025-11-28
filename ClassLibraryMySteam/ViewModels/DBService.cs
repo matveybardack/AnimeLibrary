@@ -125,12 +125,12 @@ namespace ClassLibraryMySteam.ViewModels
             #endregion
             var connection = new Connection();
 
-            string normalizedTitle = work.Title.Trim().ToLower();
-            string normalizedType = work.TypeName.Trim().ToLower();
+            string normalizedTitle = work.Title;
+            string normalizedType = work.TypeName;
 
             // 1. Запускаем оба чтения параллельно
-            var getWorkTask = connection.GetWorkByTitleAsync(normalizedTitle);
-            var getTypeTask = connection.GetTypeByNameAsync(normalizedType);
+            var getWorkTask = GetWorkByTitleAsync(normalizedTitle);
+            var getTypeTask = GetTypeByNameAsync(normalizedType);
 
             await Task.WhenAll(getWorkTask, getTypeTask);
 
@@ -144,8 +144,8 @@ namespace ClassLibraryMySteam.ViewModels
             // 3. Если типа нет — создаём
             if (typeId == null)
             {
-                await connection.AddTypeAsync(normalizedType);
-                typeId = await connection.GetTypeByNameAsync(normalizedType);
+                await AddTypeAsync(normalizedType);
+                typeId = await GetTypeByNameAsync(normalizedType);
 
                 if (typeId == null)
                     throw new Exception($"Не удалось создать тип '{work.TypeName}'");
@@ -221,7 +221,7 @@ namespace ClassLibraryMySteam.ViewModels
             var connection = new Connection();
             int? typeId;
 
-            if ((typeId = await connection.GetTypeByNameAsync(typeName)) == null)
+            if ((typeId = await GetTypeByNameAsync(typeName)) == null)
             {
                 try
                 {
