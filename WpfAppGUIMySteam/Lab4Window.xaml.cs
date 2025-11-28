@@ -12,29 +12,29 @@ namespace WpfAppGUIMySteam
         }
     }
 
-    public class Lab4ViewModel
-    {
-        public ICommand BackCommand { get; }
+    //public class Lab4ViewModel
+    //{
+    //    public ICommand BackCommand { get; }
 
-        public Lab4ViewModel()
-        {
-            BackCommand = new RelayCommand(BackToMain);
-        }
+    //    public Lab4ViewModel()
+    //    {
+    //        BackCommand = new RelayCommand(BackToMain);
+    //    }
 
-        private void BackToMain()
-        {
-            var mainWindow = new MainWindow();
-            mainWindow.Show();
+    //    private void BackToMain()
+    //    {
+    //        var mainWindow = new MainWindow();
+    //        mainWindow.Show();
 
-            // Закрываем текущее окно
-            foreach (Window window in Application.Current.Windows)
-            {
-                if (window is Lab4Window)
-                {
-                    window.Close();
-                    break;
-                }
-            }
-        }
-    }
+    //        // Закрываем текущее окно
+    //        foreach (Window window in Application.Current.Windows)
+    //        {
+    //            if (window is Lab4Window)
+    //            {
+    //                window.Close();
+    //                break;
+    //            }
+    //        }
+    //    }
+    //}
 }

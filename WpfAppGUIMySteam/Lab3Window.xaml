@@ -102,26 +102,11 @@
                                                VerticalAlignment="Center"
                                                Margin="0,0,5,8"/>
                                     <ComboBox Style="{StaticResource AnimeComboBox}"
+                                              ItemContainerStyle="{StaticResource AnimeComboBoxItem}"
                                               ItemsSource="{Binding Genres}"
                                               SelectedItem="{Binding SelectedGenre}"
                                               Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
                                               Margin="0,0,0,8"/>
-
-                                    <!-- Год -->
-                                    <TextBlock Text="Год:" 
-                                               Foreground="#cccccc" 
-                                               FontSize="14"
-                                               Grid.Row="2" Grid.Column="0"
-                                               VerticalAlignment="Center"
-                                               Margin="0,0,5,8"/>
-                                    <ComboBox ItemsSource="{Binding ComparisonOperators}"
-                                              SelectedItem="{Binding YearOperator}"
-                                              Grid.Row="2" Grid.Column="1"
-                                              Margin="0,0,5,8"/>
-                                    <TextBox Style="{StaticResource AnimeTextBox}"
-                                             Text="{Binding FilterYear}"
-                                             Grid.Row="2" Grid.Column="2"
-                                             Margin="0,0,0,8"/>
 
                                     <!-- Рейтинг -->
                                     <TextBlock Text="Рейтинг:" 
@@ -130,7 +115,9 @@
                                                Grid.Row="3" Grid.Column="0"
                                                VerticalAlignment="Center"
                                                Margin="0,0,5,8"/>
-                                    <ComboBox ItemsSource="{Binding ComparisonOperators}"
+                                    <ComboBox Style="{StaticResource AnimeComboBox}"
+                                              ItemContainerStyle="{StaticResource AnimeComboBoxItem}"
+                                              ItemsSource="{Binding ComparisonOperators}"
                                               SelectedItem="{Binding RatingOperator}"
                                               Grid.Row="3" Grid.Column="1"
                                               Margin="0,0,5,8"/>
@@ -146,7 +133,9 @@
                                                Grid.Row="4" Grid.Column="0"
                                                VerticalAlignment="Center"
                                                Margin="0,0,5,8"/>
-                                    <ComboBox ItemsSource="{Binding ComparisonOperators}"
+                                    <ComboBox Style="{StaticResource AnimeComboBox}"
+                                              ItemContainerStyle="{StaticResource AnimeComboBoxItem}"
+                                              ItemsSource="{Binding ComparisonOperators}"
                                               SelectedItem="{Binding EpisodesOperator}"
                                               Grid.Row="4" Grid.Column="1"
                                               Margin="0,0,5,8"/>
@@ -243,7 +232,7 @@
                     <StackPanel Grid.Column="1" Margin="10,0,0,0">
                         <Border Style="{StaticResource AnimeCard}" Margin="0,0,0,15">
                             <StackPanel>
-                                <TextBlock Text="📚 Вся коллекция аниме" 
+                                <TextBlock Text="📚 Вся коллекция" 
                                            Foreground="#e94560" 
                                            FontWeight="Bold" 
                                            FontSize="14"
@@ -255,7 +244,7 @@
                                            Margin="0,0,0,5"/>
 
                                 <!-- Коллекция аниме в DataGrid -->
-                                <DataGrid ItemsSource="{Binding AllAnime}" 
+                                <DataGrid ItemsSource="{Binding FilteredAnime}" 
                                          Style="{StaticResource AnimeDataGrid}"
                                          Height="507"
                                          ColumnHeaderStyle="{StaticResource DataGridColumnHeader}"

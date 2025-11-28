@@ -46,7 +46,7 @@
         /// Добавление нового произведения
         /// </summary>
         internal static readonly string AddWork = @"
-                INSERT INTO Works (Title, TypeId, Year, Rating, CoverPath)
+                INSERT INTO Works (Title, TypeId, Year, Rating, CoverPath, Series)
                 VALUES (@Title, @TypeId, @Year, @Rating, @CoverPath, @Series);
         ";
 

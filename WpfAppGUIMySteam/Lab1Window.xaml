@@ -64,7 +64,7 @@
                         <!-- Операция 1: Добавить аниме -->
                         <Border Style="{StaticResource AnimeCard}" Margin="0,0,0,15">
                             <StackPanel>
-                                <TextBlock Text="📥 Добавить аниме в библиотеку" 
+                                <TextBlock Text="📥 Добавить произведение в библиотеку" 
                                            Foreground="#e94560" 
                                            FontWeight="Bold" 
                                            FontSize="14"
@@ -81,36 +81,50 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
+                                    <!-- ТИП (аниме/манга) -->
                                     <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0">
+                                        <TextBlock Text="Тип" Foreground="#cccccc" FontSize="14"/>
+                                        <ComboBox Style="{StaticResource AnimeComboBox}"
+                                                  ItemContainerStyle="{StaticResource AnimeComboBoxItem}"
+                                                  ItemsSource="{Binding Types}"
+                                                  SelectedItem="{Binding SelectedType}"/>
+                                    </StackPanel>
+
+                                    <!-- НАЗВАНИЕ -->
+                                    <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,5,0">
                                         <TextBlock Text="Название" Foreground="#cccccc" FontSize="14"/>
                                         <TextBox Style="{StaticResource AnimeTextBox}"
                                                  Text="{Binding NewAnimeTitle}"/>
                                     </StackPanel>
 
+                                    <!-- ЖАНР (Драма/Комедия) -->
                                     <StackPanel Grid.Column="1" Grid.Row="0" Margin="5,0,0,0">
                                         <TextBlock Text="Жанр" Foreground="#cccccc" FontSize="14"/>
                                         <ComboBox Style="{StaticResource AnimeComboBox}"
                                                   ItemContainerStyle="{StaticResource AnimeComboBoxItem}"
-                                                  ItemsSource="{Binding Genres}"
+                                                  ItemsSource="{Binding Tags}"
                                                   SelectedItem="{Binding SelectedGenre}"/>
                                     </StackPanel>
 
-                                    <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,5,0">
+                                    <!-- ГОД -->
+                                    <StackPanel Grid.Column="1" Grid.Row="1" Margin="5,0,0,0">
                                         <TextBlock Text="Год выхода" Foreground="#cccccc" FontSize="14"/>
                                         <TextBox Style="{StaticResource AnimeTextBox}"
                                                  Text="{Binding NewAnimeYear}"/>
                                     </StackPanel>
 
-                                    <StackPanel Grid.Column="1" Grid.Row="1" Margin="5,0,0,0">
+                                    <!-- РЕЙТИНГ -->
+                                    <StackPanel Grid.Column="1" Grid.Row="2" Margin="5,0,0,0">
                                         <TextBlock Text="Рейтинг (0-10)" Foreground="#cccccc" FontSize="14"/>
                                         <TextBox Style="{StaticResource AnimeTextBox}"
                                                  Text="{Binding NewAnimeRating}"/>
                                     </StackPanel>
 
+                                    <!-- СЕРИИ -->
                                     <StackPanel Grid.Column="0" Grid.Row="2" Margin="0,0,5,0">
-                                        <TextBlock Text="Количество серий" Foreground="#cccccc" FontSize="14"/>
+                                        <TextBlock Text="Количество серий/глав" Foreground="#cccccc" FontSize="14"/>
                                         <TextBox Style="{StaticResource AnimeTextBox}"
-                                                 Text="{Binding NumberOfEpisodes}"/>
+                                                Text="{Binding NumberOfEpisodes}"/>
                                     </StackPanel>
                                 </Grid>
 
@@ -164,11 +178,12 @@
                                          ColumnHeaderStyle="{StaticResource DataGridColumnHeader}"
                                          CellStyle="{StaticResource DataGridCell}">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Название" Binding="{Binding Title}" Width="250"/>
-                                        <DataGridTextColumn Header="Жанр" Binding="{Binding Genre}" Width="150"/>
-                                        <DataGridTextColumn Header="Год" Binding="{Binding Year}" Width="100"/>
-                                        <DataGridTextColumn Header="Рейтинг" Binding="{Binding Rating}" Width="100"/>
-                                        <DataGridTextColumn Header="Серии" Binding="{Binding Episodes}" Width="100"/>
+                                        <DataGridTextColumn Header="Тип" Binding="{Binding Work.TypeName}" Width="90"/>
+                                        <DataGridTextColumn Header="Название" Binding="{Binding Work.Title}" Width="220"/>
+                                        <DataGridTextColumn Header="Жанр" Binding="{Binding TagNames}" Width="150"/>
+                                        <DataGridTextColumn Header="Год" Binding="{Binding Work.Year}" Width="70"/>
+                                        <DataGridTextColumn Header="Рейтинг" Binding="{Binding Work.Rating}" Width="70"/>
+                                        <DataGridTextColumn Header="Серии" Binding="{Binding Work.Series}" Width="100"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </StackPanel>
@@ -182,7 +197,7 @@
                         <!-- Вся коллекция аниме -->
                         <Border Style="{StaticResource AnimeCard}" Margin="0,0,0,15">
                             <StackPanel>
-                                <TextBlock Text="📚 Вся коллекция аниме" 
+                                <TextBlock Text="📚 Вся коллекция" 
                                            Foreground="#e94560" 
                                            FontWeight="Bold" 
                                            FontSize="14"
@@ -200,11 +215,12 @@
                                          ColumnHeaderStyle="{StaticResource DataGridColumnHeader}"
                                          CellStyle="{StaticResource DataGridCell}">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Название" Binding="{Binding Title}" Width="250"/>
-                                        <DataGridTextColumn Header="Жанр" Binding="{Binding Genre}" Width="150"/>
-                                        <DataGridTextColumn Header="Год" Binding="{Binding Year}" Width="100"/>
-                                        <DataGridTextColumn Header="Рейтинг" Binding="{Binding Rating}" Width="100"/>
-                                        <DataGridTextColumn Header="Серии" Binding="{Binding Episodes}" Width="100"/>
+                                        <DataGridTextColumn Header="Тип" Binding="{Binding Work.TypeName}" Width="90"/>
+                                        <DataGridTextColumn Header="Название" Binding="{Binding Work.Title}" Width="220"/>
+                                        <DataGridTextColumn Header="Жанр" Binding="{Binding TagNames}" Width="150"/>
+                                        <DataGridTextColumn Header="Год" Binding="{Binding Work.Year}" Width="70"/>
+                                        <DataGridTextColumn Header="Рейтинг" Binding="{Binding Work.Rating}" Width="70"/>
+                                        <DataGridTextColumn Header="Серии" Binding="{Binding Work.Series}" Width="100"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </StackPanel>

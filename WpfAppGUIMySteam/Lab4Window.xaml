@@ -69,6 +69,7 @@
                                                Foreground="#cccccc" 
                                                FontSize="14"/>
                                     <ComboBox Style="{StaticResource AnimeComboBox}"
+                                              ItemContainerStyle="{StaticResource AnimeComboBoxItem}"
                                               ItemsSource="{Binding AvailableAnime}"
                                               DisplayMemberPath="Title"
                                               SelectedItem="{Binding SelectedAnime}"
@@ -94,11 +95,11 @@
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Column="0">
                                                 <TextBlock Text="Жанр:" Foreground="#cccccc" FontSize="14"/>
-                                                <TextBlock Text="{Binding SelectedAnime.Genre}" Foreground="White" FontSize="12"/>
+                                                <TextBlock Text="{Binding SelectedAnime.Genre}" Foreground="White" FontSize="14"/>
                                             </StackPanel>
                                             <StackPanel Grid.Column="1">
                                                 <TextBlock Text="Год:" Foreground="#cccccc" FontSize="14"/>
-                                                <TextBlock Text="{Binding SelectedAnime.Year}" Foreground="White" FontSize="12"/>
+                                                <TextBlock Text="{Binding SelectedAnime.Year}" Foreground="White" FontSize="14"/>
                                             </StackPanel>
                                         </Grid>
                                         <Grid Margin="0,5,0,0">
@@ -108,11 +109,11 @@
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Column="0">
                                                 <TextBlock Text="Всего серий:" Foreground="#cccccc" FontSize="14"/>
-                                                <TextBlock Text="{Binding SelectedAnime.Episodes}" Foreground="White" FontSize="12"/>
+                                                <TextBlock Text="{Binding SelectedAnime.Episodes}" Foreground="White" FontSize="14"/>
                                             </StackPanel>
                                             <StackPanel Grid.Column="1">
                                                 <TextBlock Text="Рейтинг:" Foreground="#cccccc" FontSize="14"/>
-                                                <TextBlock Text="{Binding SelectedAnime.Rating}" Foreground="White" FontSize="12"/>
+                                                <TextBlock Text="{Binding SelectedAnime.Rating}" Foreground="White" FontSize="14"/>
                                             </StackPanel>
                                         </Grid>
                                     </StackPanel>
@@ -151,6 +152,7 @@
                                     <StackPanel Grid.Column="1" Grid.Row="0" Margin="5,0,0,0">
                                         <TextBlock Text="Начальный день:" Foreground="#cccccc" FontSize="14"/>
                                         <ComboBox Style="{StaticResource AnimeComboBox}"
+                                                  ItemContainerStyle="{StaticResource AnimeComboBoxItem}"
                                                   ItemsSource="{Binding DaysOfWeek}"
                                                   SelectedItem="{Binding StartDay}"/>
                                     </StackPanel>
@@ -198,11 +200,6 @@
                                         <TextBlock Text="Всего дней просмотра:" Foreground="#cccccc" FontSize="14"/>
                                         <TextBlock Text="{Binding TotalViewingDays}" Foreground="White" FontSize="14" FontWeight="Bold" Margin="5,0,0,0"/>
                                     </StackPanel>
-
-                                    <StackPanel Grid.Row="3" Orientation="Horizontal">
-                                        <TextBlock Text="Среднее в день:" Foreground="#cccccc" FontSize="14"/>
-                                        <TextBlock Text="{Binding AveragePerDay}" Foreground="White" FontSize="14" FontWeight="Bold" Margin="5,0,0,0"/>
-                                    </StackPanel>
                                 </Grid>
                             </StackPanel>
                         </Border>
@@ -231,13 +228,13 @@
                                 <!-- Расписание в DataGrid -->
                                 <DataGrid ItemsSource="{Binding Schedule}" 
                                          Style="{StaticResource AnimeDataGrid}"
-                                         Height="499"
+                                         Height="481"
                                          ColumnHeaderStyle="{StaticResource DataGridColumnHeader}"
                                          CellStyle="{StaticResource DataGridCell}">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Неделя" Binding="{Binding DayOfWeek}" Width="100"/>
+                                        <DataGridTextColumn Header="Неделя" Binding="{Binding WeekNumber}" Width="60"/>
                                         <DataGridTextColumn Header="День недели" Binding="{Binding DayOfWeek}" Width="200"/>
-                                        <DataGridTextColumn Header="Номера серий" Binding="{Binding Episodes}" Width="100"/>
+                                        <DataGridTextColumn Header="Номера серий" Binding="{Binding Episodes}" Width="240"/>
                                         <DataGridTextColumn Header="Количество" Binding="{Binding EpisodeCount}" Width="100"/>
                                         <DataGridTextColumn Header="Время" Binding="{Binding ViewingTime}" Width="100"/>
                                     </DataGrid.Columns>
