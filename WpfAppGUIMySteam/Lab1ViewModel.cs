@@ -41,7 +41,7 @@ namespace WpfAppGUIMySteam
 
         public List<string> Types { get; } = new List<string>
         {
-            "аниме", "манга"
+            "аниме", "манга", "манхва", "маньхуа"
         };
 
         // Поля для добавления
@@ -235,7 +235,7 @@ namespace WpfAppGUIMySteam
 
             try
             {
-                string filter = $"WHERE w.Title LIKE '%{Title}%'";
+                string filter = $"WHERE w.Title LIKE '%{Title.Trim().ToLower()}%'";
                 var results = await _dbService.GetWorksByFilterAsync(filter);
 
                 SearchResults.Clear();
