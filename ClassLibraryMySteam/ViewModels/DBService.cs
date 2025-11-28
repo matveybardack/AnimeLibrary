@@ -125,8 +125,8 @@ namespace ClassLibraryMySteam.ViewModels
             #endregion
             var connection = new Connection();
 
-            string normalizedTitle = work.Title;
-            string normalizedType = work.TypeName;
+            string normalizedTitle = work.Title.Trim().ToLower();
+            string normalizedType = work.TypeName.Trim().ToLower();
 
             // 1. Запускаем оба чтения параллельно
             var getWorkTask = GetWorkByTitleAsync(normalizedTitle);
