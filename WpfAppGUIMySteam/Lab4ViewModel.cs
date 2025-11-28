@@ -111,6 +111,10 @@ namespace WpfAppGUIMySteam
             CalculateScheduleCommand = new RelayCommand(async () => await CalculateSchedule());
             BackCommand = new RelayCommand(BackToMain);
 
+            // Инициализация контракта 
+            SelectedContractOperation = ContractOperations.First();
+            UpdateContractDetails();
+
             // Начальная загрузка данных
             LoadDataAsync();
         }
@@ -166,9 +170,17 @@ namespace WpfAppGUIMySteam
                 return;
             }
 
+            // Проверка предусловия с использованием логической функции
             if (!int.TryParse(EpisodesPerDay, out int episodesPerDay) || episodesPerDay <= 0)
             {
                 MessageBox.Show("Введите корректное количество серий в день!");
+                return;
+            }
+
+            // Проверка допустимости дня недели
+            if (string.IsNullOrEmpty(StartDay) || !DaysOfWeek.Contains(StartDay))
+            {
+                MessageBox.Show("Выберите корректный день недели!");
                 return;
             }
 
@@ -182,15 +194,30 @@ namespace WpfAppGUIMySteam
                     return;
                 }
 
-                // Преобразуем день недели
-                DayOfWeek startDay = ConvertToDayOfWeek(StartDay);
+                // Проверка постусловия - все условия выполнены
+                bool preConditionsValid = SelectedAnime != null && episodesPerDay > 0 && !string.IsNullOrEmpty(StartDay);
 
-                // Генерируем расписание
-                var scheduleDict = LogicService.GenerateSchedule(work, episodesPerDay, startDay);
+                if (preConditionsValid)
+                {
+                    // Преобразуем день недели
+                    DayOfWeek startDay = ConvertToDayOfWeek(StartDay);
 
-                // Обновляем UI
-                UpdateScheduleDisplay(scheduleDict);
-                UpdateStatistics(scheduleDict, work.Series, episodesPerDay);
+                    // Генерируем расписание
+                    var scheduleDict = LogicService.GenerateSchedule(work, episodesPerDay, startDay);
+
+                    // Обновляем UI
+                    UpdateScheduleDisplay(scheduleDict);
+                    UpdateStatistics(scheduleDict, work.Series, episodesPerDay);
+
+                    // Проверяем постусловие
+                    bool postConditionsValid = Schedule.Count > 0 &&
+                                             Schedule.Sum(d => d.EpisodeCount) == SelectedAnime.Episodes;
+
+                    if (!postConditionsValid)
+                    {
+                        MessageBox.Show("Предупреждение: не все эпизоды распределены!");
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -229,53 +256,101 @@ namespace WpfAppGUIMySteam
         }
 
         private void UpdateScheduleDisplay(Dictionary<DayOfWeek, List<int>> scheduleDict)
+
         {
+
             Schedule.Clear();
 
+
+
             // Получаем выбранный начальный день
+
             DayOfWeek startDay = ConvertToDayOfWeek(StartDay);
 
+
+
             // Создаем порядок дней недели, начиная с выбранного дня
+
             var daysInOrder = CreateDaysOrder(startDay);
 
+
+
             int currentWeek = 1;
+
             int currentEpisode = 1;
+
             int totalEpisodes = SelectedAnime.Episodes;
+
             int episodesPerDay = int.Parse(EpisodesPerDay);
 
+
+
             // Продолжаем пока не распределим все эпизоды
+
             while (currentEpisode <= totalEpisodes)
+
             {
+
                 // Для каждой недели проходим по всем дням в правильном порядке
+
                 foreach (var day in daysInOrder)
+
                 {
+
                     if (currentEpisode > totalEpisodes) break;
 
+
+
                     // Получаем эпизоды для этого дня
+
                     var dayEpisodes = new List<int>();
 
+
+
                     for (int i = 0; i < episodesPerDay && currentEpisode <= totalEpisodes; i++)
+
                     {
+
                         dayEpisodes.Add(currentEpisode);
+
                         currentEpisode++;
+
                     }
 
+
+
                     // Добавляем день в расписание (даже если эпизодов нет, чтобы показать пустой день)
+
                     var scheduleDay = new ScheduleDay
+
                     {
+
                         WeekNumber = currentWeek,
+
                         DayOfWeek = ConvertDayOfWeekToRussian(day),
+
                         Episodes = dayEpisodes.Count > 0 ? string.Join(", ", dayEpisodes) : "-",
+
                         EpisodeCount = dayEpisodes.Count,
+
                         ViewingTime = dayEpisodes.Count > 0 ? CalculateViewingTime(dayEpisodes.Count) : "-"
+
                     };
 
+
+
                     Schedule.Add(scheduleDay);
+
                 }
 
+
+
                 currentWeek++;
+
             }
+
         }
+
 
         private List<DayOfWeek> CreateDaysOrder(DayOfWeek startDay)
         {
@@ -350,6 +425,140 @@ namespace WpfAppGUIMySteam
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+        // Контрактные свойства для ЛР4
+        public List<string> ContractOperations { get; } = new List<string>
+{
+    "Генерация расписания",
+    "Проверка допустимости",
+};
+
+        private string _selectedContractOperation;
+        public string SelectedContractOperation
+        {
+            get => _selectedContractOperation;
+            set
+            {
+                _selectedContractOperation = value;
+                OnPropertyChanged();
+                UpdateContractDetails();
+            }
+        }
+
+        private string _contractTitle;
+        public string ContractTitle
+        {
+            get => _contractTitle;
+            set { _contractTitle = value; OnPropertyChanged(); }
+        }
+
+        private string _preCondition;
+        public string PreCondition
+        {
+            get => _preCondition;
+            set { _preCondition = value; OnPropertyChanged(); }
+        }
+
+        private string _postCondition;
+        public string PostCondition
+        {
+            get => _postCondition;
+            set { _postCondition = value; OnPropertyChanged(); }
+        }
+
+        private string _logicFunction;
+        public string LogicFunction
+        {
+            get => _logicFunction;
+            set { _logicFunction = value; OnPropertyChanged(); }
+        }
+
+        private string _dnf;
+        public string DNF
+        {
+            get => _dnf;
+            set { _dnf = value; OnPropertyChanged(); }
+        }
+
+        private string _knf;
+        public string KNF
+        {
+            get => _knf;
+            set { _knf = value; OnPropertyChanged(); }
+        }
+
+        private string _truthTable;
+        public string TruthTable
+        {
+            get => _truthTable;
+            set { _truthTable = value; OnPropertyChanged(); }
+        }
+
+        private string _validExample;
+        public string ValidExample
+        {
+            get => _validExample;
+            set { _validExample = value; OnPropertyChanged(); }
+        }
+
+        private string _invalidExample;
+        public string InvalidExample
+        {
+            get => _invalidExample;
+            set { _invalidExample = value; OnPropertyChanged(); }
+        }
+
+        // Свойства для проверки эквивалентности
+        private string _function1 = "A ∧ B";
+        public string Function1
+        {
+            get => _function1;
+            set { _function1 = value; OnPropertyChanged(); }
+        }
+
+        private string _function2 = "B ∧ A";
+        public string Function2
+        {
+            get => _function2;
+            set { _function2 = value; OnPropertyChanged(); }
+        }
+
+        private string _areEquivalent = "✓ Да";
+        public string AreEquivalent
+        {
+            get => _areEquivalent;
+            set { _areEquivalent = value; OnPropertyChanged(); }
+        }
+
+        // Метод для обновления деталей контракта
+        private void UpdateContractDetails()
+        {
+            switch (SelectedContractOperation)
+            {
+                case "Генерация расписания":
+                    ContractTitle = "Операция: Генерация расписания просмотра";
+                    PreCondition = "SelectedAnime ≠ null ∧ EpisodesPerDay > 0 ∧ StartDay ∈ DaysOfWeek";
+                    PostCondition = "Schedule ≠ ∅ ∧ ΣSchedule.EpisodeCount = SelectedAnime.Episodes ∧ Расписание покрывает все эпизоды";
+                    LogicFunction = "F(A,B,C) = (A=аниме выбрано) ∧ (B=серии/день > 0) ∧ (C=день недели валиден)";
+                    DNF = "(A ∧ B ∧ C) ∨ (A ∧ B ∧ ¬C) ∨ (A ∧ ¬B ∧ C)";
+                    KNF = "(A ∨ B ∨ C) ∧ (A ∨ B ∨ ¬C) ∧ (A ∨ ¬B ∨ C)";
+                    TruthTable = "A B C | F\n1 1 1 | 1\n1 1 0 | 1\n1 0 1 | 1\n0 1 1 | 0\n...";
+                    ValidExample = "Аниме=50 серий, 2 серии/день, понедельник → полное расписание на 25 дней";
+                    InvalidExample = "Аниме=null, серии/день=0 → ошибка генерации";
+                    break;
+
+                case "Проверка допустимости":
+                    ContractTitle = "Операция: Проверка допустимости параметров";
+                    PreCondition = "EpisodesPerDay ∈ ℕ⁺ ∧ StartDay ∈ {Пн,Вт,Ср,Чт,Пт,Сб,Вс} ∧ SelectedAnime.Episodes > 0";
+                    PostCondition = "isValid = (EpisodesPerDay ≤ MaxPerDay) ∧ (TotalDays ≤ MaxDays) ∧ (StartDay валиден)";
+                    LogicFunction = "F(P,D,E) = (P ≤ 10) ∧ (D ∈ {0..6}) ∧ (E > 0) ∧ (E/P ≤ 365)";
+                    DNF = "(P≤10 ∧ D∈{0..6} ∧ E>0 ∧ E/P≤365)";
+                    KNF = "(P≤10) ∧ (D∈{0..6}) ∧ (E>0) ∧ (E/P≤365)";
+                    TruthTable = "P D E | F\n2 1 50 | 1\n20 1 50 | 0\n2 7 50 | 0\n2 1 0 | 0";
+                    ValidExample = "5 серий/день, 100 серий → допустимо (20 дней)";
+                    InvalidExample = "20 серий/день, 1000 серий → недопустимо (слишком много)";
+                    break;
+            }
         }
     }
 }

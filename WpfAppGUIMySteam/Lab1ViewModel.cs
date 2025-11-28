@@ -35,7 +35,8 @@ namespace WpfAppGUIMySteam
         // Список жанров для ComboBox
         public List<string> Tags { get; } = new List<string>
         {
-            "драма", "комедия"
+            "драма", "комедия", "повседневность", "приключения", "романтика", "сверхъестественное",
+            "спорт", "тайна", "триллер", "фантастика", "фэнтези", "экшен"
         };
 
         public List<string> Types { get; } = new List<string>
@@ -122,6 +123,10 @@ namespace WpfAppGUIMySteam
             AddAnimeCommand = new RelayCommand(async () => await AddAnime());
             SearchAnimeCommand = new RelayCommand(async () => await SearchAnime());
             BackCommand = new RelayCommand(BackToMain);
+
+            // Инициализация контракта
+            SelectedContractOperation = ContractOperations.First();
+            UpdateContractDetails();
 
             // Начальная загрузка данных
             LoadDataAsync();
@@ -277,6 +282,133 @@ namespace WpfAppGUIMySteam
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+        // Контрактные свойства
+        public List<string> ContractOperations { get; } = new List<string>
+{
+    "Добавление аниме",
+    "Поиск по названию",
+    "Подсчет статистики",
+    "Валидация данных"
+};
+
+        private string _selectedContractOperation;
+        public string SelectedContractOperation
+        {
+            get => _selectedContractOperation;
+            set
+            {
+                _selectedContractOperation = value;
+                OnPropertyChanged();
+                UpdateContractDetails();
+            }
+        }
+
+        private string _contractTitle;
+        public string ContractTitle
+        {
+            get => _contractTitle;
+            set { _contractTitle = value; OnPropertyChanged(); }
+        }
+
+        private string _preCondition;
+        public string PreCondition
+        {
+            get => _preCondition;
+            set { _preCondition = value; OnPropertyChanged(); }
+        }
+
+        private string _postCondition;
+        public string PostCondition
+        {
+            get => _postCondition;
+            set { _postCondition = value; OnPropertyChanged(); }
+        }
+
+        private string _effects;
+        public string Effects
+        {
+            get => _effects;
+            set { _effects = value; OnPropertyChanged(); }
+        }
+
+        private string _invariant;
+        public string Invariant
+        {
+            get => _invariant;
+            set { _invariant = value; OnPropertyChanged(); }
+        }
+
+        private string _variant;
+        public string Variant
+        {
+            get => _variant;
+            set { _variant = value; OnPropertyChanged(); }
+        }
+
+        private string _validExample;
+        public string ValidExample
+        {
+            get => _validExample;
+            set { _validExample = value; OnPropertyChanged(); }
+        }
+
+        private string _invalidExample;
+        public string InvalidExample
+        {
+            get => _invalidExample;
+            set { _invalidExample = value; OnPropertyChanged(); }
+        }
+
+        // Метод для обновления деталей контракта
+        private void UpdateContractDetails()
+        {
+            switch (SelectedContractOperation)
+            {
+                case "Добавление аниме":
+                    ContractTitle = "Операция: Добавление произведения в библиотеку";
+                    PreCondition = "Название ≠ null ∧ Тип ∈ {аниме, манга} ∧ Жанр ∈ допустимых ∧ Рейтинг ∈ [0,10] ∧ Год ∈ [1900,2024]";
+                    PostCondition = "Произведение ∈ коллекции ∧ Коллекция.Count = Коллекция.Count' + 1 ∧ Все данные сохранены";
+                    Effects = "Увеличение размера коллекции; Обновление статистики; Сохранение в БД";
+                    Invariant = "∀ work ∈ Коллекция: work.Year ≤ 2024 ∧ work.Rating ∈ [0,10]";
+                    Variant = "Размер коллекции (монотонно возрастает)";
+                    ValidExample = "Название='Attack on Titan', Тип='аниме', Жанр='экшен', Год=2013, Рейтинг=8.5";
+                    InvalidExample = "Название='', Тип='фильм', Год=3000, Рейтинг=15";
+                    break;
+
+                case "Поиск по названию":
+                    ContractTitle = "Операция: Поиск произведений по названию";
+                    PreCondition = "Запрос ≠ null ∧ Запрос.Length > 0";
+                    PostCondition = "Результаты = {work ∈ Коллекция | work.Title.Contains(Запрос)} ∧ Результаты ⊆ Коллекция";
+                    Effects = "Фильтрация коллекции; Отображение результатов";
+                    Invariant = "Результаты ⊆ Коллекция ∧ ∀ work ∈ Результаты: work.Title.Contains(Запрос)";
+                    Variant = "Количество необработанных элементов коллекции (монотонно убывает)";
+                    ValidExample = "Запрос='Naruto' → Находит 'Naruto', 'Naruto Shippuden'";
+                    InvalidExample = "Запрос='' → Пустой результат";
+                    break;
+
+                case "Подсчет статистики":
+                    ContractTitle = "Операция: Подсчет общей статистики";
+                    PreCondition = "Коллекция ≠ null";
+                    PostCondition = "TotalCount = |Коллекция| ∧ Статистика вычислена корректно";
+                    Effects = "Агрегация данных; Обновление UI статистики";
+                    Invariant = "TotalCount ≥ 0 ∧ TotalCount = |Коллекция|";
+                    Variant = "Количество обработанных элементов (монотонно возрастает)";
+                    ValidExample = "Коллекция из 50 произведений → TotalCount=50";
+                    InvalidExample = "Коллекция=null → Ошибка вычисления";
+                    break;
+
+                case "Валидация данных":
+                    ContractTitle = "Операция: Валидация введенных данных";
+                    PreCondition = "Данные для проверки ≠ null";
+                    PostCondition = "isValid = (Год ∈ [1900,2024] ∧ Рейтинг ∈ [0,10] ∧ Название ≠ '')";
+                    Effects = "Проверка корректности; Установка флагов валидности";
+                    Invariant = "Валидные данные сохраняют целостность коллекции";
+                    Variant = "Количество проверенных полей (монотонно возрастает)";
+                    ValidExample = "Год=2020, Рейтинг=7.5, Название='Demon Slayer' → isValid=true";
+                    InvalidExample = "Год=1800, Рейтинг=-5, Название='' → isValid=false";
+                    break;
+            }
         }
     }
 }
